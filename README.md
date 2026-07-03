@@ -17,10 +17,8 @@ A minimal x86 operating system kernel written from scratch in C and NASM assembl
 - qemu-system-i386
 
 ## Build & Run
+```bash
 make run
+```
 
 ## Project Structure
-boot/        - assembly entry point and IRQ stubs
-kernel/      - C kernel, terminal, keyboard, shell, PIC, IDT
-linker.ld    - linker script
-grub.cfg     - GRUB configuration
