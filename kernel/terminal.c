@@ -1,16 +1,20 @@
 #include <stdint.h>
 
+#define MAX_FILES 16
+#define MAX_FILENAME 32
+#define MAX_FILESIZE 256
+
 /*
  * VGA text mode buffer starts at physical address 0xB8000
  * Each character takes 2 bytes:
  *   byte 0 = ASCII character
  *   byte 1 = color attribute (high nibble = background, low nibble = foreground)
  */
-static uint16_t* const VGA = (uint16_t*)0xB8000;
+static uint16_t *const VGA = (uint16_t *)0xB8000;
 
-static int     row   = 0;     /* current cursor row (0-24) */
-static int     col   = 0;     /* current cursor column (0-79) */
-static uint8_t color = 0x07;  /* light gray on black */
+static int row = 0;          /* current cursor row (0-24) */
+static int col = 0;          /* current cursor column (0-79) */
+static uint8_t color = 0x07; /* light gray on black */
 
 /* clear the screen and reset cursor to top-left */
 void terminal_init()
@@ -25,7 +29,8 @@ void terminal_init()
 /* write a single character to the screen at the current cursor position */
 void terminal_putchar(char c)
 {
-    if (c == '\n') {
+    if (c == '\n')
+    {
         /* newline — move to the beginning of the next row */
         row++;
         col = 0;
@@ -37,7 +42,8 @@ void terminal_putchar(char c)
     col++;
 
     /* wrap to next line if we hit the right edge */
-    if (col >= 80) {
+    if (col >= 80)
+    {
         col = 0;
         row++;
     }
@@ -46,9 +52,12 @@ void terminal_putchar(char c)
 /* erase the last character (used for backspace) */
 void terminal_backspace()
 {
-    if (col > 0) {
+    if (col > 0)
+    {
         col--;
-    } else if (row > 0) {
+    }
+    else if (row > 0)
+    {
         /* go to end of previous row */
         row--;
         col = 79;
@@ -59,7 +68,7 @@ void terminal_backspace()
 }
 
 /* write a null-terminated string to the screen */
-void terminal_write(const char* str)
+void terminal_write(const char *str)
 {
     while (*str)
         terminal_putchar(*str++);

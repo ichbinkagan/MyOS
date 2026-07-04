@@ -1,5 +1,9 @@
 #include "../include/terminal.h"
 
+#define MAX_FILES 16
+#define MAX_FILENAME 32
+#define MAX_FILESIZE 256
+
 void shell_run(char *input);
 
 static char buffer[128];
@@ -44,7 +48,7 @@ void kmain()
 {
     terminal_init();
     terminal_write("MyOS Booted!\n");
-    terminal_write("MyOS> ");
+    terminal_write("MyOS:/> ");
 
     /* mask all IRQs — pure polling, no interrupts needed */
     outb(0x21, 0xFF);

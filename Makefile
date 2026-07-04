@@ -4,7 +4,7 @@ AS = nasm
 
 CFLAGS = -m32 -ffreestanding -O2 -Wall -Wextra -nostdlib -Ikernel
 
-OBJS = boot.o irq.o kernel.o terminal.o keyboard.o shell.o pic.o idt.o
+OBJS = boot.o irq.o kernel.o terminal.o keyboard.o shell.o pic.o idt.o fs.o
 
 all: os.iso
 
@@ -31,6 +31,9 @@ pic.o:
 
 idt.o:
 	$(CC) $(CFLAGS) -c kernel/idt.c -o idt.o
+
+fs.o:
+	$(CC) $(CFLAGS) -c kernel/fs.c -o fs.o
 
 kernel.bin: $(OBJS)
 	$(LD) -m elf_i386 -T linker.ld -o kernel.bin $(OBJS)

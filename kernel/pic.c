@@ -1,16 +1,20 @@
 #include <stdint.h>
 
+#define MAX_FILES 16
+#define MAX_FILENAME 32
+#define MAX_FILESIZE 256
+
 /*
  * The 8259 PIC (Programmable Interrupt Controller) manages hardware IRQs.
  * By default, IRQ0-7 map to CPU interrupts 8-15, which overlap with CPU exceptions.
  * We remap them to interrupts 32-47 so they don't conflict.
  */
-#define PIC1 0x20   /* master PIC command port */
-#define PIC2 0xA0   /* slave PIC command port */
+#define PIC1 0x20 /* master PIC command port */
+#define PIC2 0xA0 /* slave PIC command port */
 
 static void outb(unsigned short port, unsigned char val)
 {
-    __asm__ volatile ("outb %0, %1" : : "a"(val), "Nd"(port));
+    __asm__ volatile("outb %0, %1" : : "a"(val), "Nd"(port));
 }
 
 void pic_remap()
@@ -20,8 +24,8 @@ void pic_remap()
     outb(PIC2, 0x11);
 
     /* ICW2: set interrupt vector offsets */
-    outb(PIC1 + 1, 0x20);   /* master IRQ0 = interrupt 32 */
-    outb(PIC2 + 1, 0x28);   /* slave  IRQ8 = interrupt 40 */
+    outb(PIC1 + 1, 0x20); /* master IRQ0 = interrupt 32 */
+    outb(PIC2 + 1, 0x28); /* slave  IRQ8 = interrupt 40 */
 
     /* ICW3: tell master PIC that slave is on IRQ2 */
     outb(PIC1 + 1, 0x04);
@@ -36,5 +40,5 @@ void pic_remap()
      * 0xFC = 11111100 — only IRQ0 (timer) and IRQ1 (keyboard) enabled
      */
     outb(PIC1 + 1, 0xFC);
-    outb(PIC2 + 1, 0xFF);   /* disable all slave IRQs */
+    outb(PIC2 + 1, 0xFF); /* disable all slave IRQs */
 }
