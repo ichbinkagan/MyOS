@@ -62,7 +62,16 @@ void shell_run(char *input)
     }
     else if (input[0] == 'c' && input[1] == 'd' && input[2] == ' ')
     {
-        fs_cd(input + 3);
+        const char *name = input + 3;
+
+        if (name[0] == 0)
+        {
+            terminal_write("Usage: cd <directory>\n");
+        }
+        else
+        {
+            fs_cd(name);
+        }
     }
     else if (streq(input, "ls"))
     {
