@@ -29,3 +29,13 @@ Pull requests are welcome. If you find a bug or want to add a feature, feel free
 
 ## License
 MIT
+
+## Commands
+- help       -- lists the commands
+- clear      -- clears the screen
+- pwd        -- prints the directory
+- mkdir      -- creates a directory
+- cd         -- go to a directory
+- rm         -- removes a file NOT A DIRECTORY
+- touch      -- creates a file
+- ls         -- lists all directories and files
