@@ -1,9 +1,11 @@
 global irq0
 global irq1
+global irq12
 global irq_default
 global isr_default
 
 extern keyboard_irq
+extern mouse_irq
 
 isr_default:
     cli
@@ -20,6 +22,13 @@ irq0:
 irq1:
     pusha
     call keyboard_irq
+    popa
+    iret
+
+; IRQ12 = PS/2 mouse (on slave PIC)
+irq12:
+    pusha
+    call mouse_irq
     popa
     iret
 

@@ -4,7 +4,7 @@ AS = nasm
 
 CFLAGS = -m32 -ffreestanding -O2 -Wall -Wextra -nostdlib -Ikernel
 
-OBJS = boot.o irq.o kernel.o terminal.o keyboard.o shell.o pic.o idt.o fs.o
+OBJS = boot.o irq.o kernel.o terminal.o keyboard.o shell.o pic.o idt.o fs.o vga.o desktop.o mouse.o window.o
 
 all: os.iso
 
@@ -34,6 +34,18 @@ idt.o:
 
 fs.o:
 	$(CC) $(CFLAGS) -c kernel/fs.c -o fs.o
+
+vga.o:
+	$(CC) $(CFLAGS) -c kernel/vga.c -o vga.o
+
+desktop.o:
+	$(CC) $(CFLAGS) -c kernel/desktop.c -o desktop.o
+
+mouse.o:
+	$(CC) $(CFLAGS) -c kernel/mouse.c -o mouse.o
+
+window.o:
+	$(CC) $(CFLAGS) -c kernel/window.c -o window.o
 
 kernel.bin: $(OBJS)
 	$(LD) -m elf_i386 -T linker.ld -o kernel.bin $(OBJS)
