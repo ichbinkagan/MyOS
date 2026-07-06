@@ -1,41 +1,45 @@
-# MyOS
+# 🖥️ MyOS - Custom Operating System
 
-A minimal x86 operating system kernel written from scratch in C and NASM assembly.
+MyOS is a hobby operating system built from scratch using **C and Assembly**.  
+It includes a basic kernel, framebuffer graphics, a simple shell, file system, and a custom desktop UI layer.
 
-## Features
-- Boots via GRUB (Multiboot)
-- VGA text mode terminal driver
-- PS/2 keyboard driver (IRQ1)
-- IDT + 8259 PIC interrupt handling
-- Simple shell (help, clear, hello)
+---
 
-## Requirements
-- gcc (with multilib)
-- nasm
-- ld
-- grub-mkrescue + xorriso
-- qemu-system-i386
+## 🚀 Features
 
-## Build & Run
+- 🧠 Multiboot-compliant kernel (GRUB boot)
+- ⌨️ Keyboard input handling (PS/2)
+- 🖼️ Framebuffer-based graphics system
+- 🪟 Basic desktop environment (custom UI layer)
+- 📁 Simple in-memory file system
+- 💻 Command-line shell (mkdir, rm, cd, ls, etc.)
+- 🎨 Primitive drawing API (rectangles, lines, text rendering)
+
+---
+
+## 🖥️ Desktop System
+
+MyOS includes a very early **desktop environment layer**:
+
+- Background rendering
+- Simple taskbar
+- "Start" button UI element
+- Basic drawing primitives (rect, text, fill)
+
+⚠️ At this stage, the desktop is **purely visual** — you cannot interact with it yet.
+
+---
+
+## ⚙️ Build Instructions
+
+### Requirements
+- GCC (32-bit support)
+- NASM
+- GRUB
+- QEMU (for testing)
+
+### Build
+
 ```bash
-make run
-```
-
-## Project Structure
-
-
-## Contributing
-Pull requests are welcome. If you find a bug or want to add a feature, feel free to fork and contribute.
-
-## License
-MIT
-
-## Commands
-- help       -- lists the commands
-- clear      -- clears the screen
-- pwd        -- prints the directory
-- mkdir      -- creates a directory
-- cd         -- go to a directory
-- rm         -- removes a file NOT A DIRECTORY
-- touch      -- creates a file
-- ls         -- lists all directories and files
+make clean
+make
