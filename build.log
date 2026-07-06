@@ -1,0 +1,40 @@
+nasm -f elf32 boot/kernel.asm -o boot.o
+nasm -f elf32 boot/irq.asm -o irq.o
+gcc -m32 -ffreestanding -O2 -Wall -Wextra -nostdlib -Ikernel -c kernel/kernel.c -o kernel.o
+gcc -m32 -ffreestanding -O2 -Wall -Wextra -nostdlib -Ikernel -c kernel/terminal.c -o terminal.o
+gcc -m32 -ffreestanding -O2 -Wall -Wextra -nostdlib -Ikernel -c kernel/keyboard.c -o keyboard.o
+gcc -m32 -ffreestanding -O2 -Wall -Wextra -nostdlib -Ikernel -c kernel/shell.c -o shell.o
+kernel/shell.c: In function ‘shell_run’:
+kernel/shell.c:69:18: warning: implicit declaration of function ‘fs_rm’ [-Wimplicit-function-declaration]
+   69 |         else if (fs_rm(name))
+      |                  ^~~~~
+gcc -m32 -ffreestanding -O2 -Wall -Wextra -nostdlib -Ikernel -c kernel/pic.c -o pic.o
+gcc -m32 -ffreestanding -O2 -Wall -Wextra -nostdlib -Ikernel -c kernel/idt.c -o idt.o
+gcc -m32 -ffreestanding -O2 -Wall -Wextra -nostdlib -Ikernel -c kernel/fs.c -o fs.o
+gcc -m32 -ffreestanding -O2 -Wall -Wextra -nostdlib -Ikernel -c kernel/vga.c -o vga.o
+gcc -m32 -ffreestanding -O2 -Wall -Wextra -nostdlib -Ikernel -c kernel/desktop.c -o desktop.o
+gcc -m32 -ffreestanding -O2 -Wall -Wextra -nostdlib -Ikernel -c kernel/mouse.c -o mouse.o
+gcc -m32 -ffreestanding -O2 -Wall -Wextra -nostdlib -Ikernel -c kernel/window.c -o window.o
+ld -m elf_i386 -T linker.ld -o kernel.bin boot.o irq.o kernel.o terminal.o keyboard.o shell.o pic.o idt.o fs.o vga.o desktop.o mouse.o window.o
+ld: warning: irq.o: missing .note.GNU-stack section implies executable stack
+ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+ld: warning: kernel.bin has a LOAD segment with RWX permissions
+mkdir -p /tmp/myos_iso/boot/grub
+cp kernel.bin /tmp/myos_iso/boot/
+cp grub.cfg /tmp/myos_iso/boot/grub/
+grub-mkrescue -o /tmp/os.iso /tmp/myos_iso
+xorriso 1.5.6 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/tmp/os.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  953g free
+Added to ISO image: directory '/'='/tmp/grub.MdCwn5'
+xorriso : UPDATE :     295 files added in 1 seconds
+Added to ISO image: directory '/'='/tmp/myos_iso'
+xorriso : UPDATE :     299 files added in 1 seconds
+xorriso : NOTE : Copying to System Area: 512 bytes from file '/usr/lib/grub/i386-pc/boot_hybrid.img'
+ISO image produced: 2512 sectors
+Written to medium : 2512 sectors at LBA 0
+Writing to 'stdio:/tmp/os.iso' completed successfully.
+
